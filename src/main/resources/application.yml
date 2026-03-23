@@ -1,0 +1,29 @@
+spring:
+  ai:
+    mcp:
+      server:
+        name: ghcopilot
+        version: 1.0.0
+        description: A Spring Boot application with Spring AI MCP Server
+        protocol: streamable
+        stdio: false
+        type: SYNC
+        annotation-scanner:
+          enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/medtrack
+    username: postgres
+    password: Kgisl@12345
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework: INFO
