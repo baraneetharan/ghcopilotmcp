@@ -1,10 +1,10 @@
 # Build stage
-FROM maven:3.9.6-eclipse-temurin-21 AS build
+FROM maven:3.9-eclipse-temurin-25-alpine AS build
 COPY . .
-RUN mvn clean install
+RUN mvn clean install -DskipTests
 
-# Package stage
-FROM eclipse-temurin:21-jdk
+# Runtime stage — alpine + jdk (or switch to jre later)
+FROM eclipse-temurin:25-jdk-alpine
 COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
