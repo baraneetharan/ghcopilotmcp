@@ -10,16 +10,33 @@ spring:
         type: SYNC
         annotation-scanner:
           enabled: true
+
+  # ── Changed to H2 in-memory ───────────────────────────────────────
   datasource:
-    url: jdbc:postgresql://localhost:5432/medtrack
-    username: postgres
-    password: Kgisl@12345
+    url: jdbc:h2:mem:medtrack     # or : jdbc:h2:mem:medtrack;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa                  # default H2 user (no password needed)
+    password:                     # leave empty
+
+  h2:
+    console:
+      enabled: true               # optional: access H2 console at /h2-console
+      path: /h2-console
+
+  sql:
+    init:
+      mode: always                # optional: run schema.sql & data.sql on startup
+
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop       # or 'create' — 'create-drop' is safer for in-memory
     properties:
       hibernate:
         format_sql: true
+    show-sql: true                # optional: very useful during dev
+
+  # Optional: if you want to see H2 console login info on startup
+  # (username: sa, no password)
 
 server:
   port: 8080
@@ -27,3 +44,7 @@ server:
 logging:
   level:
     org.springframework: INFO
+    # Optional — more visibility during development:
+    org.springframework.orm.jpa: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE   # shows bound parameter values
